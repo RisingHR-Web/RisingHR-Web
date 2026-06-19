@@ -476,5 +476,215 @@
             
         </div>
     </footer>
+    <style>
+        /* Botón verde flotante principal */
+        .wame-btn {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 60px;
+            height: 60px;
+            background-color: #25d366;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 999;
+            transition: transform 0.2s ease;
+        }
+        .wame-btn:hover {
+            transform: scale(1.05);
+        }
+        .wame-btn svg {
+            width: 34px;
+            height: 34px;
+            fill: #fff;
+        }
+
+        /* Notificación roja (globo de aviso) */
+        .wame-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 14px;
+            height: 14px;
+            background-color: #e53e3e;
+            border-radius: 50%;
+            border: 2px solid #25d366;
+        }
+
+        /* Ventana del Chat (Diseño idéntico a la imagen) */
+        .wame-window {
+            position: fixed;
+            bottom: 96px;
+            right: 24px;
+            width: 380px;
+            max-width: calc(100vw - 48px);
+            background-color: #e5ddd5; /* Color clásico fondo WhatsApp */
+            background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png'); /* Patrón sutil */
+            border-radius: 16px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+            overflow: hidden;
+            display: none; /* Se activa por JS */
+            flex-direction: column;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            z-index: 1000;
+            animation: wameFadeIn 0.3s ease;
+        }
+
+        @keyframes wameFadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cabecera verde oscuro */
+        .wame-header {
+            background-color: #206a5d;
+            color: #ffffff;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .wame-header-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 17px;
+            font-weight: 600;
+        }
+        .wame-header-title svg {
+            width: 24px;
+            height: 24px;
+            fill: #ffffff;
+        }
+        .wame-close {
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.7);
+            font-size: 24px;
+            cursor: pointer;
+            line-height: 1;
+            transition: color 0.2s;
+        }
+        .wame-close:hover {
+            color: #ffffff;
+        }
+
+        /* Cuerpo con la burbuja blanca de texto */
+        .wame-body {
+            padding: 24px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .wame-bubble {
+            background-color: #ffffff;
+            color: #333333;
+            padding: 16px;
+            border-radius: 0px 16px 16px 16px;
+            font-size: 14.5px;
+            line-height: 1.4;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+            position: relative;
+            max-width: 90%;
+        }
+        /* Triangulito de la burbuja de chat */
+        .wame-bubble::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -10px;
+            width: 0;
+            height: 0;
+            border-top: 0px solid transparent;
+            border-bottom: 12px solid transparent;
+            border-right: 10px solid #ffffff;
+        }
+
+        /* Botón verde de acción inferior */
+        .wame-action-btn {
+            background-color: #008f75;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 24px;
+            font-weight: 600;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            align-self: flex-end;
+            gap: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: background-color 0.2s;
+        }
+        .wame-action-btn:hover {
+            background-color: #007560;
+        }
+    </style>
+
+    <div class="wame-btn" id="wameBtn" onclick="toggleWame()">
+        <div class="wame-badge" id="wameBadge"></div>
+        <svg viewBox="0 0 24 24">
+            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.513 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.713-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.965C16.628 1.975 14.163.95 11.54.95 6.104.95 1.68 5.322 1.676 10.751c-.001 1.695.452 3.35 1.309 4.808L2.035 21.07l5.612-1.472zM18.257 15c-.29-.145-1.713-.845-1.978-.942-.266-.097-.459-.145-.653.145-.193.291-.748.942-.917 1.134-.169.194-.338.219-.627.074-2.146-1.071-3.527-2.731-4.321-4.093-.211-.362-.021-.556.124-.7.13-.131.29-.339.435-.508.145-.17.193-.29.29-.483.097-.193.048-.363-.024-.508-.073-.146-.653-1.573-.894-2.153-.235-.572-.475-.495-.653-.504-.169-.008-.362-.008-.556-.008-.193 0-.508.073-.773.362-.266.291-1.014.992-1.014 2.422 0 1.43 1.039 2.816 1.184 3.01.145.193 2.044 3.122 4.953 4.382.692.3 1.232.479 1.654.614.695.221 1.329.19 1.83.114.56-.085 1.713-.7 1.953-1.377.24-.678.24-1.258.169-1.377-.071-.118-.266-.193-.556-.339z"/>
+        </svg>
+    </div>
+
+    <div class="wame-window" id="wameWindow">
+        <div class="wame-header">
+            <div class="wame-header-title">
+                <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.513 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.713-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.965C16.628 1.975 14.163.95 11.54.95 6.104.95 1.68 5.322 1.676 10.751c-.001 1.695.452 3.35 1.309 4.808L2.035 21.07l5.612-1.472z"/></svg>
+                WhatsApp
+            </div>
+            <button class="wame-close" onclick="closeWame(event)">&times;</button>
+        </div>
+        <div class="wame-body">
+            <div class="wame-bubble">
+                ¡Hola! ¿Necesitas asesoría con tu estructura organizacional o un proceso de Reclutamiento y Selección? Escríbenos y te ayudamos.
+            </div>
+            <a href="https://wa.me/569XXXXXXXX?text=Hola%20Rising%20HR,%20me%20gustaría%20solicitar%20una%20asesoría." 
+               target="_blank" 
+               rel="noopener noreferrer" 
+               class="wame-action-btn" 
+               onclick="clickWame()">
+                Abrir chat
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const wameBtn = document.getElementById('wameBtn');
+        const wameWindow = document.getElementById('wameWindow');
+        const wameBadge = document.getElementById('wameBadge');
+
+        // Retardo inicial: aparece el botón flotante a los 3 segundos
+        wameBtn.style.display = 'none';
+        setTimeout(() => {
+            wameBtn.style.display = 'flex';
+        }, 3000);
+
+        function toggleWame() {
+            if (wameWindow.style.display === 'flex') {
+                wameWindow.style.display = 'none';
+            } else {
+                wameWindow.style.display = 'flex';
+                wameBadge.style.display = 'none'; // Borra el globo rojo al abrirlo
+            }
+        }
+
+        function closeWame(event) {
+            event.stopPropagation(); // Evita que el click pase al botón principal
+            wameWindow.style.display = 'none';
+        }
+
+        function clickWame() {
+            wameWindow.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
 </body>
 </html>
